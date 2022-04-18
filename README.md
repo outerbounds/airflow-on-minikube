@@ -5,7 +5,7 @@
 
 TLDR; In order to run metaflow flows with airflow on minikube the following is required: 
 
-1. [Setup, helm, minikube, and dag folder mount points in the minikube cluster](#setup-helm-and-minikube)
+1. [Setup, helm, minikube, and a dag folder mount point to the minikube cluster](#setup-helm-and-minikube)
 2. [Setup Metaflow and airflow on the minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster)
 3. [Setup authentication and metaflow related configurations](#setting-up-auth-and-metaflow-configurations)
     1. [Setup Kubernetes related secrets for AWS](#authentication-setup)
@@ -19,11 +19,11 @@ TLDR; In order to run metaflow flows with airflow on minikube the following is r
 1. `brew install minikube helm`
 2. Start minikube with a certain number of resources:`minikube start --cpus 4 --memory 8192` . Our recommendations are to provide at least 4 cpus for the entire deployment. 
 3. Update helm to contain airflow repo: `helm repo add apache-airflow https://airflow.apache.org`
-4. **In a separate terminal window run: ``minikube mount ./dags:/data/dags``**. This will create a mount point on minikube that points to the dags folder in this directory. Any file added in the dags folder will be available to containers that have this mount point. This step is required for [setting airflow on the minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster)
+4. **In a separate terminal window run: ``minikube mount ./dags:/data/dags``**. This will create a mount point on minikube that points to the dags folder in this directory. Any file added in the dags folder will be available to containers that have this mount point. This step is required for [setting airflow on the minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster). You can change `./dags` to any directory where you will host Airflow DAGs. 
 
 ## Setup Metaflow and Airflow in Minikube Cluster
 
-- Deploy Airflow using the Helm chart configuration provided in `airflow-minikube-config.yml`. The configuration values attach a volume to the dags folder for the airflow containers. Currently, the `dags` folder in the root of this repository is attached as a common volume so any new files added to this folder will create new be present inside the airflow- containers.
+- Deploy Airflow using the Helm chart configuration provided in `airflow-minikube-config.yml`. The configuration values attach a volume to the dags folder for the airflow containers. Currently, the `dags` folder in the root of this repository is attached as a common volume so any new files added to this folder will create new be present inside the airflow-containers.
     
     ```bash
     helm upgrade --install airflow apache-airflow/airflow \
