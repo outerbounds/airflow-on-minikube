@@ -7,7 +7,7 @@ TLDR; In order to run metaflow flows with airflow on minikube the following is r
 
 1. [Setup, helm, minikube, and dag folder mount points in the minikube cluster](#setup-helm-and-minikube)
 2. [Setup Metaflow and airflow on the minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster)
-3. [Running authentication and metaflow related configurations](#setting-up-auth-and-metaflow-configurations)
+3. [Setup authentication and metaflow related configurations](#setting-up-auth-and-metaflow-configurations)
     1. [Setup Kubernetes related secrets for AWS](#authentication-setup)
     2. [Setup metaflow related configuration](#metaflow-configuration-setup)
     3. [Run a test flow after setting up above configuration](#creating-a-test-airflow-dag-from-a-metaflow-flow)
