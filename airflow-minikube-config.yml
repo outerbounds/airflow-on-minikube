@@ -1,0 +1,54 @@
+executor: "LocalExecutor"
+config:
+  core:
+    dags_folder: "/usr/local/airflow/dags"
+
+webserverSecretKey: "basickey"
+
+triggerer:
+  extraVolumeMounts: # this will get the volume and mount it to that path in the container                                                                                                                                                               
+  - name: dags
+    mountPath: /usr/local/airflow/dags  # location in the container it will put the directory mentioned below.
+
+  extraVolumes: # this will create the volume from the directory
+  - name: dags
+    hostPath:
+      path: "/data/dags"  # For you this is something like /home/*user*/github/airflowDAGs/dags
+  resources:
+    limits:
+      cpu: 1.0
+      memory: 2048Mi
+    requests:
+      cpu: 1.0
+      memory: 2048Mi
+
+webserver:
+  resources:
+    limits:
+      cpu: 1.0
+      memory: 2048Mi
+    requests:
+      cpu: 1.0
+      memory: 2048Mi
+
+# Airflow scheduler settings
+scheduler:
+  # Mount additional volumes into scheduler.
+  extraVolumeMounts: # this will get the volume and mount it to that path in the container                                                                                                                                                               
+  - name: dags
+    mountPath: /usr/local/airflow/dags  # location in the container it will put the directory mentioned below.
+
+  extraVolumes: # this will create the volume from the directory
+  - name: dags
+    hostPath:
+      path: "/data/dags"  # For you this is something like /home/*user*/github/airflowDAGs/dags
+
+  resources:
+    limits:
+      cpu: 2.0
+      memory: 2048Mi
+    requests:
+      cpu: 2.0
+      memory: 2048Mi
+  # extraVolumes: []
+  # extraVolumeMounts: []
