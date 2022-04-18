@@ -67,8 +67,7 @@ python metaflow_configure.py export-metaflow-config <BUCKET-PATH> > ~/.metaflowc
 2. Since we have [added the AWS related environment variables](#authentication-setup) to `afsecret` we can just run the below command to create the `firstdag.py`  :
 
 ```bash
-python flows/card_flow.py --with kubernetes:secrets='["afsecret"]' ai
-rflow create dags/firstdag.py
+python flows/card_flow.py --with kubernetes:secrets='["afsecret"]' airflow create dags/firstdag.py
 ```
 
 ### Getting Access to Airflow UI
