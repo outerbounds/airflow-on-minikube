@@ -19,7 +19,7 @@ TLDR; In order to run metaflow flows with airflow on minikube the following is r
 1. `brew install minikube helm`
 2. Start minikube with a certain number of resources:`minikube start --cpus 4 --memory 8192` . Our recommendations are to provide at least 4 cpus for the entire deployment. 
 3. Update helm to contain airflow repo: `helm repo add apache-airflow https://airflow.apache.org`
-4. **In a separate terminal window run: ``minikube mount ./dags:/data/dags``**. This will create a mount point on minikube that points to the dags folder in this directory. Any file added in the dags folder will be available to containers that have this mount point. This step is required for [setting airflow on the minikube cluster](#setting-metaflow-and-airflow-with-minikube)
+4. **In a separate terminal window run: ``minikube mount ./dags:/data/dags``**. This will create a mount point on minikube that points to the dags folder in this directory. Any file added in the dags folder will be available to containers that have this mount point. This step is required for [setting airflow on the minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster)
 
 ## Setup Metaflow and Airflow in Minikube Cluster
 
