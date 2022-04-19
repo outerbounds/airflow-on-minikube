@@ -87,7 +87,7 @@ def get_service(namespace,deployment_name=None):
 @bash_command
 def create_aws_secret(secret_name, namespace):
     secrets = [
-        "--from-literal=%s=%s" % (k, os.environ[k]) for k in os.environ if "AWS_" in k
+        "--from-literal=%s=%s" % (k, os.environ[k]) for k in os.environ if "AWS" in k
     ]
     if len(secrets) == 0:
         return ["echo", "AWS environment variables found"]
