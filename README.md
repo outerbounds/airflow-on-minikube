@@ -57,7 +57,7 @@ python metaflow_configure.py setup-aws-secrets afsecret metaflow
     	--timeout 15m0s \
     	--namespace metaflow \
     	--create-namespace \
-        --set metaflow-ui.METAFLOW_DATASTORE_SYSROOT_S3=s3://oleg2-s3-mztdpcvj/metaflow \
+        --set metaflow-ui.METAFLOW_DATASTORE_SYSROOT_S3=s3://mybucket/metaflow \
         --set "metaflow-ui.envFrom[0].secretRef.name=afsecret" \
         --set metaflow-ui.ingress.className=nginx \
         --set metaflow-ui.ingress.enabled=true \
