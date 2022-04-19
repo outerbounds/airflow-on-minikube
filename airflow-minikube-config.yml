@@ -14,22 +14,6 @@ triggerer:
   - name: dags
     hostPath:
       path: "/data/dags"  # For you this is something like /home/*user*/github/airflowDAGs/dags
-  resources:
-    limits:
-      cpu: 1.0
-      memory: 2048Mi
-    requests:
-      cpu: 1.0
-      memory: 2048Mi
-
-webserver:
-  resources:
-    limits:
-      cpu: 1.0
-      memory: 2048Mi
-    requests:
-      cpu: 1.0
-      memory: 2048Mi
 
 # Airflow scheduler settings
 scheduler:
@@ -42,13 +26,3 @@ scheduler:
   - name: dags
     hostPath:
       path: "/data/dags"  # For you this is something like /home/*user*/github/airflowDAGs/dags
-
-  resources:
-    limits:
-      cpu: 2.0
-      memory: 2048Mi
-    requests:
-      cpu: 2.0
-      memory: 2048Mi
-  # extraVolumes: []
-  # extraVolumeMounts: []
