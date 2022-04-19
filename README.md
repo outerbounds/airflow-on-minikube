@@ -6,7 +6,7 @@ The current version of Airflow support in metaflow requires S3 access. Please co
 In order to run metaflow flows with airflow on minikube the following is required: 
 
 1. [Setup, helm, minikube, and a dag folder mount point to the minikube cluster](#setup-helm-and-minikube)
-2. [Set Kubernetes Namespaces and AWS related Kubernetes Secrets.](#authentication)
+2. [Set Kubernetes Namespaces and AWS related Kubernetes Secrets.](#namespace-and-authentication-setup)
 3. [Setup Metaflow and airflow on the minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster)
 4. [Setup metaflow related configurations](#setting-up-auth-and-metaflow-configurations)
     1. [Setup metaflow related configuration](#metaflow-configuration-setup)
@@ -78,20 +78,20 @@ python metaflow_configure.py export-metaflow-config s3://mybucket > ~/.metaflowc
 ### Creating a Test Airflow Dag from a Metaflow flow
 1. Install the metaflow (With airflow support) (TODO:)
 
-2. Since we have [added the AWS related environment variables](#authentication-setup) to `afsecret` we can just run the below command to create the `firstdag.py`  :
+2. Since we have [added the AWS related environment variables](#namespace-and-authentication-setup) to `afsecret` we can just run the below command to create the `firstdag.py`  :
 
 ```bash
 python flows/card_flow.py --with kubernetes:secrets='["afsecret"]' airflow create dags/firstdag.py
 ```
 
 ### Getting Access to Airflow UI
-Run the below command to port forward the UI from the minikube cluster. After running the command you can access the UI at `http://localhost:8080`
+The below command forwards traffic from port 8080 on the airflow-webserver container to port 8080 on the local machine. After running the command you can access the Airflow UI at `http://localhost:8080`
 ```bash
 kubectl port-forward svc/airflow-webserver 8080:8080 --namespace airflow
 ```
 
 ### Getting Access to Metaflow UI
-Run the below command opens a tunnel to the metaflow ui. Once running the command, type `localhost` in the browser to access the metaflow UI. 
+The below command opens a tunnel to the metaflow ui. After running the command you can access the Metaflow UI at `http://localhost`
 ```bash
 minikube tunnel
 ```
