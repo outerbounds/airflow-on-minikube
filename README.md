@@ -40,7 +40,7 @@ python metaflow_configure.py setup-aws-secrets afsecret metaflow
 
 ## Setup Metaflow and Airflow in Minikube Cluster
 
-1. Deploy Airflow using the Helm chart configuration provided in [airflow-minikube-config.yml](./airflow-minikube-config.yml). The configuration values attach a volume to the dags folder in the airflow containers. Currently, the [dags](./dags) folder in the root of this repository is attached as the common volume. Any new files added to this folder will be automatically present inside the airflow-containers.
+1. Deploy Airflow using the Helm chart configuration provided in [airflow-minikube-config.yml](./airflow-minikube-config.yml) using the below command. The configuration values attach a volume to the dags folder in the airflow containers. Currently, the [dags](./dags) folder in the root of this repository is attached as the common volume. Any new files added to this folder will be automatically present inside the airflow-containers.
     
     ```bash
     helm upgrade --install airflow apache-airflow/airflow \
@@ -51,7 +51,7 @@ python metaflow_configure.py setup-aws-secrets afsecret metaflow
 2. Wait for 10 minutes after the helm deployment has finished. Since directly after deployment, all components may not be in the ready state.
 3. Install and `nginx-ingress` in the minikube cluster : `minikube addons enable ingress`
 4. Clone the metaflow tools repository : `git clone git@github.com:outerbounds/metaflow-tools.git`
-5. Deploy the helm chart for metaflow from the metaflow-tools repo. The namespace of the below deployment is `metaflow`. Change the path for `s3://mybucket` to the path of the bucket. Change `metaflow-ui.envFrom[0].secretRef.name` **only if you have set a different secret name**. 
+5. Deploy the helm chart for metaflow from the metaflow-tools repo using the below command. The namespace of the below deployment is `metaflow`. Change the path for `s3://mybucket` to the path of the bucket. Change `metaflow-ui.envFrom[0].secretRef.name` **only if you have set a different secret name**. 
     
     ```bash
     helm upgrade --install metaflow metaflow-tools/k8s/helm/metaflow \
