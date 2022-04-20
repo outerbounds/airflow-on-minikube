@@ -40,7 +40,7 @@ python metaflow_configure.py setup-aws-secrets afsecret metaflow
 
 ## Setup Metaflow and Airflow in Minikube Cluster
 
-1. Deploy Airflow using the Helm chart configuration provided in [airflow-minikube-config.yml](./airflow-minikube-config.yml) using the below command. The configuration values attach a volume to the dags folder in the airflow containers. Currently, the [dags](./dags) folder in the root of this repository is attached as the common volume. Any new files added to this folder will be automatically present inside the airflow-containers.
+1. The below command deploys Airflow using the Helm chart configuration provided in [airflow-minikube-config.yml](./airflow-minikube-config.yml). The configuration values attach a volume to the dags folder in the airflow containers. Currently, the [dags](./dags) folder in the root of this repository is attached as the common volume. Any new files added to this folder will be automatically present inside the airflow-containers.
     
     ```bash
     helm upgrade --install airflow apache-airflow/airflow \
