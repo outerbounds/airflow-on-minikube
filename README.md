@@ -31,7 +31,8 @@ pip install -r requirements.txt # install the requirements file.
 kubectl create namespace metaflow
 kubectl create namespace airflow
 ```
-3. Once the namespaces have been created, we will setup AWS related credentials in the metaflow and airflow namespaces. The below command extracts the environment variables in your local shell starting with `AWS` and creates secrets with those environment variables in the `airflow` and `metaflow` namespaces. These secrets will be essential to run the metaflow related via airflow. 
+3. Once the namespaces have been created, we will setup AWS related credentials in the metaflow and airflow namespaces. The below command extracts the environment variables in your local shell starting with `AWS` and creates secrets with those environment variables in the `airflow` and `metaflow` namespaces. These secrets will be essential when running metaflow flows via airflow. Passing these secrets to metaflow jobs will ensure that jobs have correct AWS credentials to access the S3 bucket.
+
 ```
 python metaflow_configure.py setup-aws-secrets afsecret airflow
 python metaflow_configure.py setup-aws-secrets afsecret metaflow
