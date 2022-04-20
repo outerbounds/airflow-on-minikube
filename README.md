@@ -71,7 +71,7 @@ python metaflow_configure.py setup-aws-secrets afsecret metaflow
 
 ### Metaflow Configuration Setup
 
-Create `~/.metaflowconfig` folder If it doesn’t exist and then run the following command to extract a metaflow configuration for the minikube cluster and store it in the `~/.metaflow_config` folder. The command requires and S3 bucket path. 
+Create `~/.metaflowconfig` folder If it doesn’t exist and then run the following command to extract a metaflow configuration for the minikube cluster and store it in the `~/.metaflow_config` folder. The command requires a S3 bucket path. 
 
 ```bash
 python metaflow_configure.py export-metaflow-config s3://mybucket > ~/.metaflowconfig/config.json
