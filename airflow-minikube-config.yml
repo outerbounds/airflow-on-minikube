@@ -1,5 +1,7 @@
 executor: "LocalExecutor"
 config:
+  scheduler:
+    dag_dir_list_interval: 10
   core:
     dags_folder: "/usr/local/airflow/dags"
 
