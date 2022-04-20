@@ -1,11 +1,11 @@
-# How to Run Metaflow with Airflow on Minikube
+# Metaflow with Airflow on Minikube
 
 
 The first version of metaflow which supports airflow requires S3 access. Please configure a S3 bucket and ensure you have AWS credentials (access keys, secret keys etc.) set in your environment variables during the configuration process. 
 
-To run metaflow flows with airflow on minikube follow the below steps in order: 
+To run Metaflow flows with Airflow on Minikube follow these steps in order: 
 
-1. [Setup, helm, minikube, and a dag folder mount point to the minikube cluster](#setup-helm-and-minikube)
+1. [Setup Helm, Minikube, and a dag folder mount point to the minikube cluster](#setup-helm-and-minikube)
 2. [Create Kubernetes namespaces and set AWS related Kubernetes secrets.](#namespace-and-authentication-setup)
 3. [Setup Metaflow and airflow on the minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster)
 4. [Setup metaflow related configurations](#setting-up-auth-and-metaflow-configurations)
@@ -16,31 +16,30 @@ To run metaflow flows with airflow on minikube follow the below steps in order:
 
 ## Setup Helm and Minikube
 
-1. Install helm and minikube. If you have brew on your machine then you can just run this command : `brew install minikube helm`. We recommend helm version >= 2.5.0.
-2. Start minikube with a certain number of resources:`minikube start --cpus 6 --memory 10240` . Our recommendations are to provide at least 6 cpus for the entire deployment. The more resources given to minikube, smoother the overall user-experience. 
-3. Update helm with the airflow repo: `helm repo add apache-airflow https://airflow.apache.org`
-4. **In a separate terminal window run: ``minikube mount ./dags:/data/dags``**. This will create a volume on minikube that points to the dags folder in this directory. Any file added in the dags folder will be available to containers that have this volume mounted. This step is required for [setting up airflow on the minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster). You can change `./dags` to any directory where you will host Airflow DAGs. 
+1. Install Helm and Minikube. You can get these using `brew`: `brew install minikube helm`. We recommend helm version >= 2.5.0.
+2. Start Minikube: `minikube start --cpus 6 --memory 10240` . We recommend at least 6 cpus for the entire deployment. The more resources, the smoother the overall user-experience. 
+3. Update Helm with the airflow repo: `helm repo add apache-airflow https://airflow.apache.org`
+4. In a separate terminal window run: ``minikube mount ./dags:/data/dags``. This will create a volume on Minikube that points to the dags folder in this directory. Any file added in the dags folder will be available to containers that have this volume mounted. This step is required for [setting up Airflow on the Minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster). You can change `./dags` to any directory where you will host Airflow DAGs. 
 
 ## Namespace and Authentication Setup
-1. Install the `requirements` file with `pip`. 
+1. Install the `requirements` file in this repository with `pip`. 
 ```bash
-pip install -r requirements.txt # install the requirements file. 
+pip install -r requirements.txt
 ```
 2. Create a namespace for `metaflow` and `airflow` deployment
 ```bash
 kubectl create namespace metaflow
 kubectl create namespace airflow
 ```
-3. Once the namespaces have been created, we will setup AWS related credentials in the metaflow and airflow namespaces. The below command extracts the environment variables in your local shell starting with `AWS` and creates secrets with those environment variables in the `airflow` and `metaflow` namespaces. These secrets will be essential when running metaflow flows via airflow. Passing these secrets to metaflow jobs will ensure that jobs have correct AWS credentials to access the S3 bucket.
-
-```
+3. Once the namespaces have been created, we will setup AWS related credentials in the `metaflow` and `airflow` namespaces. The below command creates secrets for all environment variables in your local shell that start with `AWS`. These secrets will be essential when running Metaflow flows via Airflow for this setup. You wouldn't necessarily need to do the same for a production deployment of Metaflow on Airflow.
+```bash
 python metaflow_configure.py setup-aws-secrets afsecret airflow
 python metaflow_configure.py setup-aws-secrets afsecret metaflow
 ```
 
 ## Setup Metaflow and Airflow in Minikube Cluster
 
-1. The below command deploys Airflow using the Helm chart configuration provided in [airflow-minikube-config.yml](./airflow-minikube-config.yml). The configuration values attach a volume to the dags folder in the airflow containers. Currently, the [dags](./dags) folder in the root of this repository is attached as the common volume. Any new files added to this folder will be automatically present inside the airflow-containers.
+1. The below command deploys Airflow using the Helm chart configuration provided in [airflow-minikube-config.yml](./airflow-minikube-config.yml). The configuration values attach a volume to the dags folder in the Airflow containers. Currently, the [dags](./dags) folder in the root of this repository is attached as the common volume. Any new files added to this folder will be automatically made available inside Airflow containers.
     
     ```bash
     helm upgrade --install airflow apache-airflow/airflow \
@@ -48,10 +47,10 @@ python metaflow_configure.py setup-aws-secrets afsecret metaflow
         --timeout 10m0s \
         --namespace airflow --create-namespace
     ```
-2. Wait for 10 minutes after the helm deployment has finished. Since directly after deployment, all components may not be in the ready state.
-3. Install and `nginx-ingress` in the minikube cluster : `minikube addons enable ingress`
+2. Wait for 10 minutes after the helm deployment has finished, since all components may not be in the ready state immediately.
+3. Install `nginx-ingress` in the Minikube cluster : `minikube addons enable ingress`
 4. Clone the metaflow tools repository : `git clone git@github.com:outerbounds/metaflow-tools.git`
-5. Deploy the helm chart for metaflow from the metaflow-tools repo using the below command. The namespace of the below deployment is `metaflow`. Change the path for `s3://mybucket` to the path of the bucket. Change `metaflow-ui.envFrom[0].secretRef.name` from `afsecret` to something else *only if you have set a different secret name*.
+5. Deploy the Helm chart for Metaflow from the metaflow-tools repo using the below command. The namespace of the below deployment is `metaflow`. Change the path for `s3://mybucket` to the path of your Amazon S3 bucket. Change `metaflow-ui.envFrom[0].secretRef.name` from `afsecret` to something else only if you have set a different secret name.
     
     ```bash
     helm upgrade --install metaflow metaflow-tools/k8s/helm/metaflow \
@@ -71,14 +70,14 @@ python metaflow_configure.py setup-aws-secrets afsecret metaflow
 
 ### Metaflow Configuration Setup
 
-Create `~/.metaflowconfig` folder If it doesn’t exist and then run the following command to extract a metaflow configuration for the minikube cluster and store it in the `~/.metaflow_config` folder. The command requires a S3 bucket path. 
+Create `~/.metaflowconfig` folder if it doesn’t exist and then run the following command to extract a Metaflow configuration for the Minikube cluster and store it in the `~/.metaflow_config` folder. The command requires an Amazon S3 bucket path. 
 
 ```bash
 python metaflow_configure.py export-metaflow-config s3://mybucket > ~/.metaflowconfig/config.json
 ```
 
 ### Creating a Test Airflow Dag from a Metaflow flow
-1. Install the metaflow (Fork with airflow support): 
+1. Install Metaflow fork with Airflow support: 
 ```bash
 pip install git+https://github.com/outerbounds/metaflow.git@airflow
 ```
@@ -96,11 +95,11 @@ kubectl port-forward svc/airflow-webserver 8080:8080 --namespace airflow
 ```
 
 ### Getting Access to Metaflow UI
-The below command opens a tunnel to the metaflow ui. After running the command you can access the Metaflow UI at `http://localhost`
+The below command opens a tunnel to the Metaflow UI. After running the command you can access the Metaflow UI at `http://localhost`
 ```bash
 minikube tunnel
 ```
-If minikube tunnel doesn't work you can always ssh-port forward port 80 on the minikube shell.:
+If Minikube tunnel doesn't work you can always ssh-port forward port 80 on the Minikube shell.:
 ```bash
 # Running this will have UI available at http://localhost:8008
 ssh -i $(minikube ssh-key) docker@$(minikube ip) -L 8008:localhost:80 
