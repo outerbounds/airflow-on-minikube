@@ -97,6 +97,11 @@ The below command opens a tunnel to the metaflow ui. After running the command y
 ```bash
 minikube tunnel
 ```
+If minikube tunnel doesn't work you can always ssh-port forward port 80 on the minikube shell. This will automatically forward the UI:
+```bash
+# This will have the UI available at http://localhost:8008
+ssh -i $(minikube ssh-key) docker@$(minikube ip) -L 8008:localhost:80 
+```
 
 ### Accessing Artifacts generated from the flow
 The below command forwards traffic from port 8080 of the metaflow-service to port 8089 on the local machine. 
