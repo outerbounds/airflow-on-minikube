@@ -6,7 +6,7 @@ The first version of metaflow which supports airflow requires S3 access. Please 
 To run metaflow flows with airflow on minikube the following is required: 
 
 1. [Setup, helm, minikube, and a dag folder mount point to the minikube cluster](#setup-helm-and-minikube)
-2. [Set Kubernetes Namespaces and AWS related Kubernetes Secrets.](#namespace-and-authentication-setup)
+2. [Create Kubernetes namespaces and set AWS related Kubernetes secrets.](#namespace-and-authentication-setup)
 3. [Setup Metaflow and airflow on the minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster)
 4. [Setup metaflow related configurations](#setting-up-auth-and-metaflow-configurations)
     1. [Setup metaflow related configuration](#metaflow-configuration-setup)
