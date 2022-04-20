@@ -18,7 +18,7 @@ To run metaflow flows with airflow on minikube follow the below steps in order:
 
 1. Install helm and minikube. If you have brew on your machine then you can just run this command : `brew install minikube helm`. We recommend helm version >= 2.5.0.
 2. Start minikube with a certain number of resources:`minikube start --cpus 6 --memory 10240` . Our recommendations are to provide at least 6 cpus for the entire deployment. The more resources given to minikube, smoother the overall user-experience. 
-3. Update helm to contain airflow repo: `helm repo add apache-airflow https://airflow.apache.org`
+3. Update helm with the airflow repo: `helm repo add apache-airflow https://airflow.apache.org`
 4. **In a separate terminal window run: ``minikube mount ./dags:/data/dags``**. This will create a volume on minikube that points to the dags folder in this directory. Any file added in the dags folder will be available to containers that have this volume mounted. This step is required for [setting up airflow on the minikube cluster](#setup-metaflow-and-airflow-in-minikube-cluster). You can change `./dags` to any directory where you will host Airflow DAGs. 
 
 ## Namespace and Authentication Setup
