@@ -54,7 +54,8 @@ Options:
   --help                      Show this message and exit
 ```
 
-
+## Scheduling Airflow Dags
+Metaflow compile airflow DAGs can be scheduled via [@schedule](http://docs.metaflow.org/going-to-production-with-metaflow/scheduling-metaflow-flows/scheduling-with-argo-workflows#scheduling-a-flow) decorator. 
 
 ## Airflow Sensor Related Decorator Usage
 Metaflow exposes the following Airflow sensor related flow-decorators: 
@@ -125,9 +126,6 @@ class MyFlow(FlowSpec):
     ...
     ...
 ```
-
-## Scheduling Airflow Dags
-Metaflow compile airflow DAGs can be scheduled via [@schedule](http://docs.metaflow.org/going-to-production-with-metaflow/scheduling-metaflow-flows/scheduling-with-argo-workflows#scheduling-a-flow) decorator. 
 
 # Resources 
 1. [Airflow Task Instance](https://airflow.apache.org/docs/apache-airflow/stable/_api/airflow/models/taskinstance/index.html#airflow.models.taskinstance.TaskInstance)
