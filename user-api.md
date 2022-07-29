@@ -3,10 +3,7 @@
 The following are the key user-related constructs exposed by metaflow to support the Airflow universe:
 
 1. A CLI command to create airflow workflow DAG file from metaflow `FlowSpec`. 
-2. Programmic API changes : Flow level decorator support for:
-    1. `schedule_interval` specification. `schedule_interval` determines how often a dag is scheduled on Airflow. 
-    2. Airflow offers a "task-level construct" named [Sensors](https://airflow.apache.org/docs/apache-airflow/2.3.0/concepts/sensors.html). Sensors essentially wait for some event to take place based on the sensor's usecase. Metaflow's Airflow integration supports usage of sensors at a flow level.
-
+2. Programmic API changes : Flow level decorator support for Airflow [Sensors](https://airflow.apache.org/docs/apache-airflow/2.3.0/concepts/sensors.html). Sensors are "task-level" constructs. Sensors essentially wait for some event to take place based on the sensor's usecase. Metaflow's Airflow integration supports usage of sensors at a flow level.
 
 ## How it works
 
@@ -17,28 +14,44 @@ Metaflow requires Kubernetes as Airflow's compute-execution medium. Metaflow lev
 ## CLI Usage
 Metaflow exposes an `airflow create` command from the FlowSpec file's cli. This command can help convert a FlowSpec file into a Airflow DAG.  
 ```
-Usage: python myflow.py airflow create [OPTIONS] FILE_PATH
+Usage: python myflow.py airflow create [OPTIONS] FILE
 
-  Create an airflow workflow from this metaflow workflow
+  Compile a new version of this flow to Airflow DAG.
 
 Options:
-  --tag TEXT                 Annotate the DAG on Airflow and any of it's
-                             metaflow runs with the given tag. You can specify
-                             this option multiple times to attach multiple
-                             tags.
+  --authorize TEXT            Authorize using this production token. You need
+                              this when you are re-deploying an existing flow
+                              for the first time. The token is cached in
+                              METAFLOW_HOME, so you only need to specify this
+                              once.
 
-  --name TEXT                `dag_id` of airflow DAG. The flow name is used
-                             instead if this option is not specified
+  --generate-new-token        Generate a new production token for this flow.
+                              This will move the production flow to a new
+                              namespace.
 
-  --is-paused-upon-creation  Sets `is_paused_upon_creation=True` for the
-                             Airflow DAG.
+  --new-token TEXT            Use the given production token for this flow.
+                              This will move the production flow to the given
+                              namespace.
 
-  --namespace TEXT
-  --max-workers INTEGER      Maximum number of concurrent Airflow tasks.
-                             [default: 100]
+  --tag TEXT                  Annotate all objects produced by Airflow DAG
+                              executions with the given tag. You can specify
+                              this option multiple times to attach multiple
+                              tags.
 
-  --worker-pool TEXT         Worker pool the for the airflow tasks.
-  --help                     Show this message and exit.
+  --is-paused-upon-creation   Generated Airflow DAG is paused/unpaused upon
+                              creation.
+
+  --namespace TEXT            Change the namespace from the default to the
+                              given tag. See run --help for more information.
+
+  --max-workers INTEGER       Maximum number of parallel processes.  [default:
+                              100]
+
+  --workflow-timeout INTEGER  Workflow timeout in seconds. Enforced only for
+                              scheduled DAGs.
+
+  --worker-pool TEXT          Worker pool for Airflow DAG execution.
+  --help                      Show this message and exit
 ```
 
 
@@ -114,16 +127,8 @@ class MyFlow(FlowSpec):
 ```
 
 ## Scheduling Airflow Dags
-Metaflow exposes a `@airflow_schedule_interval` decorator to configure the scheduling of airflow dags. `@airflow_schedule_interval` takes the same arguments are [@schedule](http://docs.metaflow.org/going-to-production-with-metaflow/scheduling-metaflow-flows/scheduling-with-argo-workflows#scheduling-a-flow). Attaching this decorator to a flow also adds a `--schedule` option to the CLI :  
+Metaflow compile airflow DAGs can be scheduled via [@schedule](http://docs.metaflow.org/going-to-production-with-metaflow/scheduling-metaflow-flows/scheduling-with-argo-workflows#scheduling-a-flow) decorator. 
 
-```sh
-python myflow.py --schedule '* * * * *' airflow create minutelydag.py
-```
-
-You can even use airflow presets with the `--schedule` option for configuring the scheduling/cron interval
-```sh
-python myflow.py --schedule @daily airflow create minutelydag.py
-```
 # Resources 
 1. [Airflow Task Instance](https://airflow.apache.org/docs/apache-airflow/stable/_api/airflow/models/taskinstance/index.html#airflow.models.taskinstance.TaskInstance)
 2. [Airflow Task Object](https://airflow.apache.org/docs/apache-airflow/stable/_api/airflow/models/taskmixin/index.html)

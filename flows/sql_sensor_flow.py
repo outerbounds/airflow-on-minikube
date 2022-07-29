@@ -1,10 +1,9 @@
-from metaflow import FlowSpec, step, card, Parameter
-from metaflow import airflow_sql_sensor, airflow_schedule_interval, project
+from metaflow import FlowSpec, step, card
+from metaflow import airflow_sql_sensor
 
 CONNECTION_STR = "k8s-airflow-postgres"
 
 
-@airflow_schedule_interval
 @airflow_sql_sensor(
     sql="select count(*) from company;", mode="poke", conn_id=CONNECTION_STR
 )
