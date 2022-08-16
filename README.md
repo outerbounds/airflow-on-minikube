@@ -79,7 +79,7 @@ python metaflow_configure.py export-metaflow-config s3://mybucket > ~/.metaflowc
 ### Creating a Test Airflow Dag from a Metaflow flow
 1. Install Metaflow fork with Airflow support: 
 ```bash
-pip install git+https://github.com/outerbounds/metaflow.git@airflow-nflx
+pip install metaflow
 ```
 
 2. Since we have [added the AWS related environment variables](#namespace-and-authentication-setup) to `afsecret` we can just run the below command to create the `firstdag.py`  :
