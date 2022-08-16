@@ -70,7 +70,7 @@ python metaflow_configure.py setup-aws-secrets afsecret metaflow
 
 ### Metaflow Configuration Setup
 
-Create `~/.metaflowconfig` folder if it doesn’t exist and then run the following command to extract a Metaflow configuration for the Minikube cluster and store it in the `~/.metaflow_config` folder. The command requires an Amazon S3 bucket path. 
+Create `~/.metaflowconfig` folder if it doesn’t exist and then run the below command to extract a Metaflow configuration for the Minikube cluster and store it in the `~/.metaflow_config` folder. The command requires an Amazon S3 bucket path. If you changed the name of the secret in when [setting up metaflow](#setup-metaflow-and-airflow-in-minikube-cluster) then add `--metaflow-secret <SECRETNAME>` option to the below command
 
 ```bash
 python metaflow_configure.py export-metaflow-config s3://mybucket > ~/.metaflowconfig/config.json
@@ -85,7 +85,7 @@ pip install metaflow
 2. Since we have [added the AWS related environment variables](#namespace-and-authentication-setup) to `afsecret` we can just run the below command to create the `firstdag.py`  :
 
 ```bash
-python flows/card_flow.py --with kubernetes:secrets='["afsecret"]' airflow create dags/firstdag.py
+python flows/card_flow.py --with kubernetes airflow create dags/firstdag.py
 ```
 
 ### Getting Access to Airflow UI

@@ -114,7 +114,8 @@ def setup_secrets(secret_name, namespace):
 @click.option("--airflow-namespace", "airflow_ns", default="airflow")
 @click.option("--metaflow-namespace", "mf_ns", default="metaflow")
 @click.option("--metaflow-helm-deployment-name", "mf_helm", default="metaflow")
-def export_config(bucket_path, airflow_ns, mf_ns, mf_helm):
+@click.option("--metaflow-secret", "mf_secret", default="afsecret")
+def export_config(bucket_path, airflow_ns, mf_ns, mf_helm, mf_secret):
     click.secho(
         json.dumps(
             setup_config(
@@ -122,7 +123,8 @@ def export_config(bucket_path, airflow_ns, mf_ns, mf_helm):
                 os.path.join(bucket_path, "data"),
                 mf_ns,
                 airflow_ns,
-                '%s-metaflow-service'%mf_helm
+                '%s-metaflow-service'%mf_helm,
+                mf_secret
             ),
             indent=4,
         ),
@@ -130,7 +132,7 @@ def export_config(bucket_path, airflow_ns, mf_ns, mf_helm):
     )
 
 
-def setup_config(s3_root, datatools_root, metaflow_namespace, airflow_namespace, metaflow_deployment_name):
+def setup_config(s3_root, datatools_root, metaflow_namespace, airflow_namespace, metaflow_deployment_name, mf_creds_secret):
     service_dec = get_service(metaflow_namespace,deployment_name=metaflow_deployment_name)
     md_ports = [p for p in service_dec['spec']['ports'] if p['name']=='metadata']
     return {
@@ -140,6 +142,7 @@ def setup_config(s3_root, datatools_root, metaflow_namespace, airflow_namespace,
         "METAFLOW_DEFAULT_METADATA": "service",
         "METAFLOW_SERVICE_URL": "http://%s:%s/" % (service_dec['spec']['clusterIP'],str(md_ports[0]['port'])),
         "METAFLOW_KUBERNETES_NAMESPACE": airflow_namespace,
+        "METAFLOW_KUBERNETES_SECRETS":mf_creds_secret
         # "METAFLOW_KUBERNETES_SERVICE_ACCOUNT":"metaflow-service-account",
     }
 
