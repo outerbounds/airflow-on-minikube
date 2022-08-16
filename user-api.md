@@ -13,7 +13,7 @@ Metaflow requires Kubernetes as Airflow's compute-execution medium. Metaflow lev
 ## Decorator Support 
 `@conda`,`@catch`, `@retry`,`@card`,`@project`,`@environment`,`@timeout`,`@environment`,`@kubernetes`,`@resources`
 ## Version Support 
-A minimum Airflow version of `2.0.0` is required to support basic Metaflow decorators and flows with nested branches. _*Foreach's are not supported with Airflow version 2.0.0*_. Decorators like `@batch` is are also not supported with Airflow. Airflow introduced [dynamic task mapping](https://airflow.apache.org/docs/apache-airflow/stable/concepts/dynamic-task-mapping.html) in version 2.3.0. Metaflow will very soon support foreach's which can work with Airflow version `2.3.0`. _*Foreach support will also require that the airflow installation has [apache-airflow-providers-cncf-kubernetes](https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/index.html) provider installed at minimum of version 4.2.0*_.  
+A minimum Airflow version of `2.2.0` is required to support basic Metaflow decorators and flows with nested branches. _*Foreach's are not supported with Airflow version 2.2.0*_. Decorators like `@batch` is are also not supported with Airflow. Airflow introduced [dynamic task mapping](https://airflow.apache.org/docs/apache-airflow/stable/concepts/dynamic-task-mapping.html) in version 2.3.0. Metaflow will very soon support foreach's which can work with Airflow version `2.3.0`. _*Foreach support will also require that the airflow installation has [apache-airflow-providers-cncf-kubernetes](https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/index.html) provider installed at minimum of version 4.2.0*_.  
 
 
 ## CLI Usage
